@@ -19,6 +19,6 @@ public class IntroSceneController : MonoBehaviour {
 
 	public void OnSaltarIntroClick() {
 		Debug.Log ("skip pressed!");
-		Application.LoadLevel (2);
+		Application.LoadLevel (1); // menu principal
 	}
 }
