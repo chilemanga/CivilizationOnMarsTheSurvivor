@@ -1,6 +1,7 @@
 ﻿using System;
+using UnityEngine;
 
-public class Veta {
+public class Veta : MonoBehaviour {
 
 	public Recurso Recurso {
 		get;
