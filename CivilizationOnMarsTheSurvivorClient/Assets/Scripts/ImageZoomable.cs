@@ -17,7 +17,13 @@ public class ImageZoomable : MonoBehaviour {
 		transform.localScale += Vector3.one * Time.deltaTime/timeToGoNextScene;
 
 		if( timeElapsed > timeToGoNextScene ) {
-			Application.LoadLevel(3);
+			GoToNextScene ();
 		}
+	}
+
+	static void GoToNextScene ()
+	{
+		// To the game!
+		Application.LoadLevel (3);
 	}
 }
