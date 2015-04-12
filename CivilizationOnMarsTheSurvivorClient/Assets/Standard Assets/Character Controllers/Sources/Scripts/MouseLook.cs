@@ -30,6 +30,8 @@ public class MouseLook : MonoBehaviour {
 
 	float rotationY = 0F;
 
+	public bool lockCursor = false;
+
 	void Update ()
 	{
 		if (axes == RotationAxes.MouseXAndY)
@@ -56,8 +58,14 @@ public class MouseLook : MonoBehaviour {
 	
 	void Start ()
 	{
+		if (lockCursor)
+		{
+			Screen.lockCursor = true;
+		}
+		/*
 		// Make the rigid body not change rotation
 		if (GetComponent<Rigidbody>())
 			GetComponent<Rigidbody>().freezeRotation = true;
+			*/
 	}
 }
