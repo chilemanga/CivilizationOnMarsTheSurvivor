@@ -29,7 +29,10 @@ public class PlayerBehaviour : MonoBehaviour {
 	}
 
 	public Text textHierro;
-
+	public Text textAgua;
+	public Text textSilicio;
+	public Text textCalcio;
+	public Text textMagnesio;
 
 	// Use this for initialization
 	void Start () {
@@ -78,29 +81,37 @@ public class PlayerBehaviour : MonoBehaviour {
 
 		Debug.Log (String.Format("collision.gameObject.tag: {0} gameObject.tag: {1}", collision.gameObject.tag, gameObject.tag));
 
-		bool destroy = false;
+		//bool destroy = false;
 
-		//if (collision.gameObject.tag == "vetaHierro") {
+		//if (collision.gameObject ) {
+		Veta veta = collision.gameObject.GetComponent<Veta>();
 
-		VetaHierroBehaviour behaviourH = collision.gameObject.GetComponent<VetaHierroBehaviour>();
-		if (behaviourH != null) {
+		//VetaHierroBehaviour behaviourH = collision.gameObject.GetComponent<VetaHierroBehaviour>();
+		if (veta != null) {
 
-			AddVetaHierroToMochila (behaviourH);
+			AddVetaToMochila (veta);
+			AddVetaToMision (veta);
 
-			Medidor medidorHierro = mochila.Single (m => m.Recurso == Recurso.Hierro);
+			Medidor medidor = mochila.Single (m => m.Recurso == veta.Recurso);
+
+			if (veta is VetaHierroBehaviour) {
+
+				textHierro.text = String.Format ("{0} Kgs", medidor.MasaActual.ToString());	
+
+			}else if (veta is VetaAguaBehaviour)
+			{
+				textAgua.text = String.Format ("{0} Lts", medidor.MasaActual.ToString());	
+			}
+
+
 
 			Debug.Log (String.Format ("Se agregaron {0} Kg de hierro a la mochila! Hierro en la mochila: {1}/{2} Kg", 
-			                          behaviourH.Masa.ToString (), 
-			                          medidorHierro.MasaActual.ToString (),
-			                          medidorHierro.MasaMaxima.ToString ()));
-
-			AddVetaHierroToMision (behaviourH);
-			textHierro.text = String.Format ("{0} Kgs", medidorHierro.MasaActual);
+			                          veta.Masa.ToString (), 
+			                          medidor.MasaActual.ToString (),
+			                          medidor.MasaMaxima.ToString ()));
 			
-			destroy = true;
+			Destroy (collision.gameObject);
 		}
-		VetaAguaBehaviour behaviourA = collision.gameObject.GetComponent<VetaAguaBehaviour>();
-		//TODO: AGUA!!!
 
 		if (Mision.EstaCumplida) {
 
@@ -108,41 +119,22 @@ public class PlayerBehaviour : MonoBehaviour {
 
 		}
 
-
-		/*}
-
-		if (collision.gameObject.tag == "vetaAgua") {
-
-			//AddVetaAguaToMochila(collision.gameObject.GetComponent<VetaAguaBehaviour>());
-			
-			destroy = true;
-			
-		}*/
-
-		if (destroy) {
-
-			Destroy (collision.gameObject);
-
-		}
-
 	}
 
-	private void AddVetaHierroToMochila(VetaHierroBehaviour vetaHierroBehaviour) {
+	private void AddVetaToMochila(Veta veta) {
 
-		Veta vetaHierro = vetaHierroBehaviour;
-
-		Medidor medidorHierro = mochila.SingleOrDefault (m => m.Recurso == vetaHierro.Recurso);
+		Medidor medidorHierro = mochila.SingleOrDefault (m => m.Recurso == veta.Recurso);
 
 		if (medidorHierro == null) {
 
-			medidorHierro = new Medidor() { MasaMaxima = 100, MasaActual = vetaHierro.Masa, Recurso = Recurso.Hierro };
+			medidorHierro = new Medidor() { MasaMaxima = 100, MasaActual = veta.Masa, Recurso = veta.Recurso };
 
 			mochila.Add(medidorHierro);
 
 		}
 		else {
 
-			medidorHierro.MasaActual += vetaHierro.Masa;
+			medidorHierro.MasaActual += veta.Masa;
 
 			if (medidorHierro.MasaActual > medidorHierro.MasaMaxima) {
 
@@ -154,16 +146,16 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	}
 
-	private void AddVetaHierroToMision(Veta vetaHierro){
+	private void AddVetaToMision(Veta veta){
 
-		IList<MetaRecurso> metasRecursoHierro = Mision.Metas
+		IList<MetaRecurso> metasRecurso = Mision.Metas
 													.Select (m => m as MetaRecurso)
-													.Where (m => m.Recurso == Recurso.Hierro)
+													.Where (m => m.Recurso == veta.Recurso)
 													.ToList ();
 
-		foreach (var metaRecurso in metasRecursoHierro) {
+		foreach (var metaRecurso in metasRecurso) {
 
-			metaRecurso.MasaActual += vetaHierro.Masa;
+			metaRecurso.MasaActual += veta.Masa;
 
 		}
 
