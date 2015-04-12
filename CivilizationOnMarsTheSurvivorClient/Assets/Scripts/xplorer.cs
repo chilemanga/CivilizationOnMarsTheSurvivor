@@ -28,7 +28,7 @@ public class xplorer : MonoBehaviour {
 
 	public void OnMissionConfirmed() {
 		//TODO: Save which mission was selected
-		Application.LoadLevel (2);
+		Application.LoadLevel (3);
 	}
 
 }
