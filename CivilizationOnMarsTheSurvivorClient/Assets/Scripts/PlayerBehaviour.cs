@@ -33,6 +33,8 @@ public class PlayerBehaviour : MonoBehaviour {
 	public Text textSilicio;
 	public Text textCalcio;
 	public Text textMagnesio;
+	private float nivelOxigeno = 100;
+	public float speedNivelOxigeno = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -46,6 +48,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		nivelOxigeno -= speedNivelOxigeno * Time.deltaTime;
 
 		if (Input.GetKeyUp (KeyCode.Escape)) {
 			Application.LoadLevel(1); // Mission selection
@@ -101,9 +104,19 @@ public class PlayerBehaviour : MonoBehaviour {
 			{
 				textAgua.text = String.Format ("{0} Lts", medidor.MasaActual.ToString());	
 			}
-
-
-
+			else if (veta is VetaSilicioBehaviour)
+			{
+				textSilicio.text = String.Format ("{0} Kgs", medidor.MasaActual.ToString());	
+			}
+			else if (veta is VetaCalcioBehaviour)
+			{
+				textCalcio.text = String.Format ("{0} Kgs", medidor.MasaActual.ToString());	
+			}
+			else if (veta is VetaMagnesioBehaviour)
+			{
+				textMagnesio.text = String.Format ("{0} Kgs", medidor.MasaActual.ToString());	
+			}
+		
 			Debug.Log (String.Format ("Se agregaron {0} Kg de hierro a la mochila! Hierro en la mochila: {1}/{2} Kg", 
 			                          veta.Masa.ToString (), 
 			                          medidor.MasaActual.ToString (),
