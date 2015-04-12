@@ -46,12 +46,11 @@ public class PlayerBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		/*
-		if (Input.GetKeyUp (KeyCode.UpArrow)) {
-			Debug.Log("adsfadsfad!!");
 
+		if (Input.GetKeyUp (KeyCode.Escape)) {
+			Application.LoadLevel(1); // Mission selection
 		}
-		*/
+
 
 		if (axes == RotationAxes.MouseXAndY)
 		{
